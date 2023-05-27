@@ -57,41 +57,93 @@ exports.createTask = async (req, res) => {
 };
 
 // Delete Task
+// exports.deleteTask = async (req, res) => {
+//   try {
+//     if (!task) {
+//       return res.status(404).json(`NO task with id: ${id}`);
+//     }
+//     await Task.findByIdAndDelete(req.params.id);
+//     res.status(204).json({
+//       status: "success",
+//       data: null,
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       status: "fail",
+//       message: error,
+//     });
+//   }
+// };
+
 exports.deleteTask = async (req, res) => {
+  const { id } = req.params;
+
   try {
+    const task = await Task.findById(id);
+
     if (!task) {
-      return res.status(404).json(`NO task with id: ${id}`);
+      return res.status(404).json({ message: `No task with id: ${id}` });
     }
-    await Tour.findByIdAndDelete(req.params.id);
+
+    await Task.findByIdAndDelete(id);
+
     res.status(204).json({
-      status: "success",
+      status: 'success',
       data: null,
     });
   } catch (error) {
     res.status(400).json({
-      status: "fail",
-      message: error,
+      status: 'fail',
+      message: error.message,
     });
   }
 };
 
 // Update Task
+// exports.updateTask = async (req, res) => {
+//   try {
+//   const { id } = req.params;
+
+//     const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//       runValidators: true,
+//     });
+//     res.status(200).json({
+//       status: "success",
+//       data: {
+//         task,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       status: "fail",
+//       message: error,
+
+//     });
+//   }
+// };
+
 exports.updateTask = async (req, res) => {
+  const { id } = req.params;
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    const task = await Task.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
+    if (!task) {
+      return res.status(404).json({ message: `No task with id: ${id}` });
+    }
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         task,
       },
     });
   } catch (error) {
     res.status(400).json({
-      status: "fail",
-      message: error,
+      status: 'fail',
+      message: error.message,
     });
   }
 };
+

@@ -4,15 +4,19 @@ interface TaskFormProps {
   createTask: (e: FormEvent<HTMLFormElement>) => void;
   name: string;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  isEditing: boolean;
+  updateTask: any
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({
   createTask,
   name,
   handleInputChange,
+  isEditing,
+  updateTask,
 }) => {
   return (
-    <form className='task-form' onSubmit={createTask}>
+    <form className='task-form' onSubmit={isEditing ? updateTask : createTask}>
       <input
         type='text'
         placeholder='Add a Task'
@@ -20,7 +24,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
         value={name}
         onChange={handleInputChange}
       />
-      <button type='submit'>Add</button>
+      <button type='submit'> {isEditing ? 'Edit' : 'Add'}</button>
     </form>
   );
 };
